@@ -1,0 +1,794 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Gerenciamento de Senhas",
+    "description": "Sistema de Gerenciamento de Senhas corporativas criado desde o zero",
+    "contact": {
+      "name": "Support",
+      "email": "carlossoarespedro20@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/admin/register": {
+      "post": {
+        "summary": "Registro do Administrador do Sistema.",
+        "description": "Endpoint para criar Adimin que vai gerenciar o sistema.",
+        "requestBody": {
+          "description": "Dados necessários para registro do Admin:",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestRegisterAdmin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário registrado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User registered successfully",
+                  "user": {
+                    "isBlocked": false,
+                    "id": 6,
+                    "username": "Admin.Carlos",
+                    "passwordHash": "$2b$10$bui3iJ9vD4tIrC888laUiO7birox6H1ZRqx1x4boQbpaXjLl/O9Sy",
+                    "fullName": "Carlos Celestino Antonio Soares",
+                    "emailAddress": "carlossoarespedro20@gmail.com",
+                    "jobTitle": "Admin",
+                    "accessLevel": 3,
+                    "isActive": true,
+                    "updatedAt": "2023-12-21T10:05:38.144Z",
+                    "createdAt": "2023-12-21T10:05:38.144Z"
+    }
+}
+              }
+            }
+          },
+          "400": {
+            "description": "Erro nos dados de entrada",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Detalhes do erro específico"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Usuário já existe",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Este email possui uma conta."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno do servidor."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Autenticar usuário",
+        "description": "Endpoint para autenticar um usuário",
+        "requestBody": {
+          "description": "Dados necessários para a autenticação do usuário",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login bem-sucedido",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Login Bem feito",
+                  "expiresIn": 90, 
+                  "token": "Bearer <token>"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Conta bloqueada",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Account is blocked. Please contact the administrator."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Registrar um novo usuário",
+        "description": "Endpoint para criar um novo usuário",
+        "requestBody": {
+          "description": "Dados necessários para o registro do usuário",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUser"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuário registrado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User registered successfully",
+                  "user": {
+                    "id": 1,
+                    "username": "example_user",
+                    "fullName": "John Doe",
+                    "emailAddress": "john.doe@example.com",
+                    "jobTitle": "Admin",
+                    "accessLevel": 3,
+                    "isActive": true
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro nos dados de entrada",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Detalhes do erro específico"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Usuário já existe",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Este e-mail já possui uma conta."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno do servidor."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recovery/password/reset/request": {
+      "post": {
+        "summary": "Solicitar redefinição de senha",
+        "description": "Endpoint para solicitar a redefinição de senha",
+        "requestBody": {
+          "description": "Dados necessários para solicitar a redefinição de senha",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPasswordResetPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Solicitação de redefinição de senha bem-sucedida",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Password reset request successful"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro nos dados de entrada ou token inválido",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Detalhes do erro específico"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "User not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recovery/password/reset": {
+      "post": {
+        "summary": "Redefinir senha",
+        "description": "Endpoint para redefinir a senha com base no token de recuperação",
+        "requestBody": {
+          "description": "Dados necessários para redefinir a senha",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+        "200": {
+            "description": "Redefinição de senha bem-sucedida",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Password reset successful"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token inválido ou senha anterior",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Detalhes do erro específico"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "User not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "summary": "Obter todos os usuários",
+        "description": "Endpoint para obter todos os usuários do sistema",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "username": "user1",
+                    "emailAddress": "user1@example.com"
+                  },
+                  {
+                    "id": 2,
+                    "username": "user2",
+                    "emailAddress": "user2@example.com"
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "Apenas o administrador do sistema pode acessar esse endpoint",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Apenas o administrador do sistema pode acessar esse endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno do servidor."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/{id}": {
+      "get": {
+        "summary": "Obter informações do usuário por ID",
+        "description": "Endpoint para obter informações de um usuário específico por ID",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "username": "user1",
+                  "emailAddress": "user1@example.com"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Apenas o administrador do sistema pode acessar esse endpoint ou usuário não encontrado",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Apenas o administrador do sistema pode acessar esse endpoint ou usuário não encontrado"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno do servidor."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/{id}/activities": {
+      "get": {
+        "summary": "Obter atividades do usuário por ID",
+        "description": "Endpoint para obter as atividades de um usuário específico por ID",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "example": {
+                  "username": "user1",
+                  "emailAddress": "user1@example.com",
+                  "id": 1,
+                  "actions": [
+                    {
+                      "actionName": "login",
+                      "details": "Successful",
+                      "createdAt": "2023-12-21T10:05:38.144Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Apenas o administrador do sistema pode acessar esse endpoint ou usuário não encontrado",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Apenas o administrador do sistema pode acessar esse endpoint ou usuário não encontrado"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno do servidor."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/activities": {
+      "get": {
+        "summary": "Obter todas as atividades de usuários",
+        "description": "Endpoint para obter todas as atividades de usuários do sistema",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "userId": 1,
+                    "actionName": "login",
+                    "details": "Successful",
+                    "createdAt": "2023-12-21T10:05:38.144Z",
+                    "updatedAt": "2023-12-21T10:05:38.144Z",
+                    "user": {
+                      "username": "user1",
+                      "emailAddress": "user1@example.com"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "Apenas o administrador do sistema pode acessar esse endpoint",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Apenas o administrador do sistema pode acessar esse endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno do servidor."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/{id}/block": {
+      "put": {
+        "summary": "Bloquear/Desbloquear usuário por ID",
+        "description": "Endpoint para bloquear/desbloquear um usuário específico por ID",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Corpo da requisição para bloquear/desbloquear usuário",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "isBlocked": {
+                    "type": "boolean",
+                    "description": "Indica se o usuário deve ser bloqueado (true) ou desbloqueado (false)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Usuário bloqueado/desbloqueado com sucesso."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Apenas o administrador do sistema pode acessar esse endpoint ou usuário não encontrado",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Apenas o administrador do sistema pode acessar esse endpoint ou usuário não encontrado"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno do servidor."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/{id}/delete": {
+      "delete": {
+        "summary": "Excluir usuário por ID",
+        "description": "Endpoint para excluir um usuário específico por ID",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Usuário excluído com sucesso."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Apenas o administrador do sistema pode acessar esse endpoint ou usuário não encontrado",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Apenas o administrador do sistema pode acessar esse endpoint ou usuário não encontrado"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno do servidor."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RequestRegisterAdmin": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Nome do Admin"
+          },
+          "fullName": {
+            "type": "string",
+            "description": "Nome completo do Admin"
+          },
+          "emailAddress": {
+            "type": "string",
+            "description": "E-mail Admin"
+          },
+          "password": {
+            "type": "string",
+            "description": "Senha do Admin."
+          }
+        }
+      },
+      "RequestLogin": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Nome do usuario no sistema"
+          },
+          "password": {
+            "type": "string",
+            "description": "Senha do Usuario"
+          }
+        }
+
+      },
+      "RegisterUser": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Nome do usuário"
+          },
+          "email": {
+            "type": "string",
+            "description": "Endereço de e-mail do usuário"
+          },
+          "fullName": {
+            "type": "string",
+            "description": "Nome completo do usuário"
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Cargo do usuário"
+          },
+          "accessLevel": {
+            "type": "number",
+            "description": "Nível de acesso do usuário"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Indica se o usuário está ativo"
+          }
+        },
+        "required": ["username", "email", "fullName", "jobTitle", "accessLevel", "isActive"]
+      },
+      "Token": {
+        "type": "string",
+        "description": "Token de autenticação no formato 'Bearer <token>'"
+      },
+      "RequestPasswordResetPayload": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Endereço de e-mail do usuário"
+          }
+        },
+        "required": ["email"]
+      },
+      "ResetPasswordPayload": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Token de recuperação"
+          },
+          "newPassword": {
+            "type": "string",
+            "description": "Nova senha do usuário"
+          }
+        },
+        "required": ["token", "newPassword"]
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Esquema de autenticação JWT"
+      }
+    }
+  }
+}
