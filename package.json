@@ -23,7 +23,6 @@
     "nodemailer": "^6.9.7",
     "nodemon": "^3.0.2",
     "sequelize": "^6.35.1",
-    "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
