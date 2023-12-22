@@ -32,56 +32,62 @@ Sistema de gerenciamento de usuários com funcionalidades como registro, autenti
 
 ## Fluxo do Sistema
 
-### Registro de Admin
+### 1. Registro de Usuário
+- Rota: `/auth/register` (POST)
+- Controlador: `registerControllers.register`
+- Descrição: Registra um novo usuário no sistema.
 
-- **Endpoint:** `POST /auth/register-admin`
-- **Fluxo:** Usuários com privilégios de administrador podem registrar outras contas de administrador.
+### 2. Login de Usuário
+- Rota: `/auth/login` (POST)
+- Controlador: `loginControllers.login`
+- Descrição: Autentica um usuário no sistema.
 
-### Gerenciar Usuários (Somente Administradores)
+### 3. Solicitação de Redefinição de Senha
+- Rota: `/recovery/password/reset/request` (POST)
+- Controlador: `recoveryControllers.requestPasswordReset`
+- Descrição: Solicita a redefinição de senha, enviando um e-mail com um token de recuperação.
 
-- **Endpoint:** `GET /api/admin/users`
-- **Descrição:** Obtém a lista de todos os usuários registrados no sistema.
-- **Autenticação:** Somente administradores têm acesso a essa rota.
-- **Resposta de Sucesso:** Retorna uma lista de usuários com seus detalhes, como nome, e-mail e data de registro.
+### 4. Redefinição de Senha
+- Rota: `/recovery/password/reset` (POST)
+- Controlador: `recoveryControllers.resetPassword`
+- Descrição: Redefine a senha usando um token de recuperação.
 
-### Bloquear Usuário (Somente Administradores)
+## Administração
 
-- **Endpoint:** `PUT /api/admin/users/:id/block`
-- **Descrição:** Permite que os administradores bloqueiem um usuário, impedindo seu acesso ao sistema.
-- **Parâmetros:** `id`: ID do usuário a ser bloqueado.
-- **Autenticação:** Somente administradores têm acesso a essa rota.
-- **Resposta de Sucesso:** Retorna uma confirmação de que o usuário foi bloqueado com sucesso.
+### 5. Registro de Administrador
+- Rota: `/admin/register` (POST)
+- Controlador: `registerAdminControllers.register`
+- Descrição: Registra um novo administrador no sistema.
 
-### Desbloquear Usuário (Somente Administradores)
+### 6. Obter Todos os Usuários
+- Rota: `/admin/users` (GET)
+- Controlador: `adminControllers.getUsers`
+- Descrição: Obtém todos os usuários no sistema (apenas para administradores).
 
-- **Endpoint:** `PUT /api/admin/users/:id/unblock`
-- **Descrição:** Permite que os administradores removam o bloqueio de um usuário, restaurando seu acesso ao sistema.
-- **Parâmetros:** `id`: ID do usuário a ser desbloqueado.
-- **Autenticação:** Somente administradores têm acesso a essa rota.
-- **Resposta de Sucesso:** Retorna uma confirmação de que o usuário foi desbloqueado com sucesso.
+### 7. Obter Informações de Usuário Específico
+- Rota: `/admin/users/:id` (GET)
+- Controlador: `adminControllers.getUserId`
+- Descrição: Obtém informações sobre um usuário específico (apenas para administradores).
 
-### Alterar Senha do Usuário
+### 8. Obter Atividades de Usuário Específico
+- Rota: `/admin/users/:id/activities` (GET)
+- Controlador: `adminControllers.getUserActivities`
+- Descrição: Obtém as atividades de um usuário específico (apenas para administradores).
 
-- **Endpoint:** `PUT /api/user/change-password`
-- **Descrição:** Permite que os usuários autenticados alterem sua senha.
-- **Parâmetros:** `senhaAtual`: Senha atual do usuário. `novaSenha`: Nova senha desejada.
-- **Autenticação:** Somente usuários autenticados têm acesso a essa rota.
-- **Resposta de Sucesso:** Retorna uma confirmação de que a senha foi alterada com sucesso.
+### 9. Obter Todas as Atividades de Usuários
+- Rota: `/admin/activities` (GET)
+- Controlador: `adminControllers.getActivityUsers`
+- Descrição: Obtém todas as atividades de usuários (apenas para administradores).
 
-### Logout
+### 10. Bloquear ou Desbloquear Usuário
+- Rota: `/admin/users/:id/block` (PUT)
+- Controlador: `adminControllers.updateUsers`
+- Descrição: Bloqueia ou desbloqueia um usuário (apenas para administradores).
 
-- **Endpoint:** `POST /auth/logout`
-- **Descrição:** Invalida o token de autenticação do usuário, desconectando-o.
-- **Autenticação:** Somente usuários autenticados têm acesso a essa rota.
-- **Resposta de Sucesso:** Retorna uma confirmação de logout bem-sucedido.
-
-### Excluir Conta do Usuário
-
-- **Endpoint:** `DELETE /api/user/delete-account`
-- **Descrição:** Permite que os usuários autenticados excluam permanentemente suas contas.
-- **Parâmetros:** `senha`: Senha para confirmar a exclusão da conta.
-- **Autenticação:** Somente usuários autenticados têm acesso a essa rota.
-- **Resposta de Sucesso:** Retorna uma confirmação de exclusão de conta bem-sucedida.
+### 11. Excluir Usuário
+- Rota: `/admin//users/:id/delete` (DELETE)
+- Controlador: `adminControllers.deleteUser`
+- Descrição: Exclui um usuário do sistema (apenas para administradores).
 
 
 ## Como Iniciar
