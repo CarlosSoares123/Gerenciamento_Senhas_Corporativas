@@ -36,11 +36,13 @@ Sistema de gerenciamento de usuários com funcionalidades como registro, autenti
 - Rota: `/auth/register` (POST)
 - Controlador: `registerControllers.register`
 - Descrição: Registra um novo usuário no sistema.
+- Autenticação: Somente administradores têm acesso a essa rota.
 
 ### 2. Login de Usuário
 - Rota: `/auth/login` (POST)
 - Controlador: `loginControllers.login`
 - Descrição: Autentica um usuário no sistema.
+
 
 ### 3. Solicitação de Redefinição de Senha
 - Rota: `/recovery/password/reset/request` (POST)
@@ -63,31 +65,37 @@ Sistema de gerenciamento de usuários com funcionalidades como registro, autenti
 - Rota: `/admin/users` (GET)
 - Controlador: `adminControllers.getUsers`
 - Descrição: Obtém todos os usuários no sistema (apenas para administradores).
+- Autenticação: Somente administradores têm acesso a essa rota.
 
 ### 7. Obter Informações de Usuário Específico
 - Rota: `/admin/users/:id` (GET)
 - Controlador: `adminControllers.getUserId`
 - Descrição: Obtém informações sobre um usuário específico (apenas para administradores).
+- Autenticação: Somente administradores têm acesso a essa rota.
 
 ### 8. Obter Atividades de Usuário Específico
 - Rota: `/admin/users/:id/activities` (GET)
 - Controlador: `adminControllers.getUserActivities`
 - Descrição: Obtém as atividades de um usuário específico (apenas para administradores).
+- Autenticação: Somente administradores têm acesso a essa rota.
 
 ### 9. Obter Todas as Atividades de Usuários
 - Rota: `/admin/activities` (GET)
 - Controlador: `adminControllers.getActivityUsers`
 - Descrição: Obtém todas as atividades de usuários (apenas para administradores).
+- Autenticação: Somente administradores têm acesso a essa rota.
 
 ### 10. Bloquear ou Desbloquear Usuário
 - Rota: `/admin/users/:id/block` (PUT)
 - Controlador: `adminControllers.updateUsers`
 - Descrição: Bloqueia ou desbloqueia um usuário (apenas para administradores).
+- Autenticação: Somente administradores têm acesso a essa rota.
 
 ### 11. Excluir Usuário
 - Rota: `/admin//users/:id/delete` (DELETE)
 - Controlador: `adminControllers.deleteUser`
 - Descrição: Exclui um usuário do sistema (apenas para administradores).
+- Autenticação: Somente administradores têm acesso a essa rota.
 
 
 ## Como Iniciar
