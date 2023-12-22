@@ -1,4 +1,4 @@
-﻿# Soares Streaming Backend
+﻿# Sistema de Gerenciamento de Senhas Corporativas
 ## Visão Geral
 Sistema de gerenciamento de usuários com funcionalidades como registro, autenticação, recuperação de senha, e administração de usuários. Ele foi desenvolvido utilizando Node.js, Express.js, Sequelize (ORM para interação com banco de dados MySQL), e outras tecnologias relacionadas.
 
